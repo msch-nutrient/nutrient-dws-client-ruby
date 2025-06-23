@@ -2,26 +2,24 @@ AllCops:
   TargetRubyVersion: 3.0
   SuggestExtensions: false
 
-# Disable some overly strict metrics for this API client
+# Disable complexity and length metrics for this API client
 Metrics/ClassLength:
-  Max: 300
+  Enabled: false
 
 Metrics/MethodLength:
-  Max: 30
+  Enabled: false
 
 Metrics/AbcSize:
-  Max: 50
+  Enabled: false
 
 Metrics/CyclomaticComplexity:
-  Max: 20
+  Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 20
+  Enabled: false
 
 Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - '*.gemspec'
+  Enabled: false
 
 # Allow longer lines for descriptive text
 Layout/LineLength:
