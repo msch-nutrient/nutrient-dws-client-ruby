@@ -12,6 +12,14 @@ This document outlines the design and functionality of the nutrient-dws Ruby gem
 
 **Namespace:** All library code will reside within the NutrientDWS::Processor namespace.
 
+Make sure to read:
+https://www.nutrient.io/api/tools-overview/
+https://www.nutrient.io/api/documentation/developer-guides/api-overview/
+https://www.nutrient.io/api/documentation/developer-guides/combine-workflows/
+
+https://www.nutrient.io/api/reference/public/
+OpenAPI Spec: https://dashboard.nutrient.io/assets/specs/public@1.9.0-dfc6ec1c1d008be3dcb81a72be6346b5.yml?vsn=d
+
 ## **2\. Gem Installation**
 
 The gem should be packaged and distributed via RubyGems.org. It can be added to a project's Gemfile:
