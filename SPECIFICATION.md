@@ -1,3 +1,5 @@
+What follows us a specification. Read it, read the provided URLs and ultrathink how to start implementing it:                                                                                          
+
 # **nutrient-dws Ruby Client Library Specification**
 
 ## **1\. Introduction**
