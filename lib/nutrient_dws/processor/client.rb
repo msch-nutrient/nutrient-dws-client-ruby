@@ -13,6 +13,7 @@ module NutrientDWS
 
       def initialize(api_key:)
         raise ArgumentError, 'API key is required' if api_key.nil? || api_key.empty?
+
         @api_key = api_key
         @boundary = SecureRandom.hex(16)
       end
@@ -47,7 +48,8 @@ module NutrientDWS
             type: 'pptx'
           }
         else
-          raise ArgumentError, "Unsupported output format: #{to}. Supported formats: pdf, png, jpg, jpeg, webp, tiff, docx, xlsx, pptx"
+          raise ArgumentError,
+                "Unsupported output format: #{to}. Supported formats: pdf, png, jpg, jpeg, webp, tiff, docx, xlsx, pptx"
         end
 
         make_request(instructions, files: { 'document' => file })
@@ -76,7 +78,7 @@ module NutrientDWS
         files = { 'document' => file }
 
         # Build watermark action with required width/height
-        watermark_action = { 
+        watermark_action = {
           type: 'watermark',
           width: options[:width] || 200,
           height: options[:height] || 50
@@ -131,7 +133,7 @@ module NutrientDWS
       def split(file:, ranges:)
         # For splitting, we specify page ranges in the part itself
         part = build_part(file, 'document')
-        
+
         # Add pageIndexes to specify which pages to include
         page_indexes = parse_page_ranges(ranges)
         if !url?(file)
@@ -140,7 +142,7 @@ module NutrientDWS
           # For URLs, modify the part structure
           part[:file][:pageIndexes] = page_indexes
         end
-        
+
         instructions = {
           parts: [part]
         }
@@ -151,7 +153,7 @@ module NutrientDWS
       def redact(file:, text: [])
         parts = [build_part(file, 'document')]
         actions = []
-        
+
         # Create a redaction action for each text term
         text.each do |term|
           actions << {
@@ -162,10 +164,10 @@ module NutrientDWS
             }
           }
         end
-        
+
         # Apply all redactions at the end
         actions << { type: 'applyRedactions' }
-        
+
         instructions = {
           parts: parts,
           actions: actions
@@ -205,7 +207,7 @@ module NutrientDWS
 
       def make_request(instructions, files: {})
         uri = URI("#{API_BASE_URL}#{API_ENDPOINT}")
-        
+
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
 
@@ -244,7 +246,7 @@ module NutrientDWS
           filename = extract_filename(file)
 
           body << "--#{@boundary}"
-          body << %Q{Content-Disposition: form-data; name="#{file_key}"; filename="#{filename}"}
+          body << %(Content-Disposition: form-data; name="#{file_key}"; filename="#{filename}")
           body << 'Content-Type: application/octet-stream'
           body << ''
           body << file_content
@@ -284,7 +286,7 @@ module NutrientDWS
           raise NutrientDWS::AuthenticationError, 'Invalid or missing API key'
         else
           # Add debugging info to error message
-          error_details = ""
+          error_details = ''
           begin
             parsed_error = JSON.parse(response.body)
             if parsed_error['error'] && parsed_error['error']['failingPaths']
@@ -297,7 +299,7 @@ module NutrientDWS
             # If we can't parse the error, just include the raw body
             error_details = "\nRaw response: #{response.body}"
           end
-          
+
           raise NutrientDWS::APIError.new(
             "API request failed: #{response.message}#{error_details}",
             status_code: response.code.to_i,

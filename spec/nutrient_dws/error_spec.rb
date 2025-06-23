@@ -44,7 +44,7 @@ RSpec.describe NutrientDWS::APIError do
         status_code: 400,
         response_body: '{"error": "Invalid parameter"}'
       )
-      
+
       expect(error.message).to eq('Bad request')
       expect(error.status_code).to eq(400)
       expect(error.response_body).to eq('{"error": "Invalid parameter"}')
