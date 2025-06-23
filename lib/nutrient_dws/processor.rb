@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "processor/client"
+require_relative 'processor/client'
 
 module NutrientDWS
   module Processor

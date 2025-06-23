@@ -53,10 +53,10 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
           client.convert(file: 'non_existent_file.docx', to: 'pdf')
         end.to raise_error(Errno::ENOENT)
       end
-      
+
       it 'raises an error for unsupported output format' do
         skip 'sample.docx fixture not found' unless File.exist?(docx_file)
-        
+
         expect do
           client.convert(file: docx_file, to: 'unsupported_format')
         end.to raise_error(ArgumentError, /Unsupported output format/)
@@ -169,7 +169,7 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
     it 'successfully redacts text from a PDF' do
       skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
 
-      redacted_pdf = client.redact(file: pdf_file, text: ['confidential', 'secret'])
+      redacted_pdf = client.redact(file: pdf_file, text: %w[confidential secret])
       expect(redacted_pdf).to be_a_valid_pdf
     end
 
@@ -214,7 +214,7 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
       pdf_result = client.convert(file: remote_pdf_url, to: 'pdf')
       expect(pdf_result).to be_a_valid_pdf
     end
-    
+
     it 'successfully converts remote URLs to image formats' do
       png_result = client.convert(file: remote_pdf_url, to: 'png')
       expect(png_result).to be_a(String)

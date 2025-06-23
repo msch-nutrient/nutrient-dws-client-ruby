@@ -9,7 +9,7 @@ RSpec::Matchers.define :be_a_valid_pdf do
     "expected a binary string starting with '%PDF', but got #{actual.class}"
   end
 
-  failure_message_when_negated do |actual|
+  failure_message_when_negated do |_actual|
     "expected not to be a valid PDF, but got a string starting with '%PDF'"
   end
 
