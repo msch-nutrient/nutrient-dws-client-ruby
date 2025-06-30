@@ -1,0 +1,144 @@
+{
+  "annotations": [
+    {
+      "backgroundColor": "#2293FB",
+      "bbox": [50, 50, 150, 150],
+      "borderWidth": 0,
+      "createdAt": "1970-01-01T00:00:00Z",
+      "font": "Helvetica",
+      "fontColor": "#FFFFFF",
+      "fontSize": 18,
+      "fontStyle": ["bold"],
+      "horizontalAlign": "center",
+      "id": "01HZ5BHHGEF82KD85CBWZ2CVY6",
+      "isFitting": true,
+      "lineHeightFactor": 1.190000057220459,
+      "name": "01HZ5BHHGEF82KD85CBWZ2CVY6",
+      "opacity": 1,
+      "pageIndex": 0,
+      "rotation": 0,
+      "text": {
+        "format": "plain",
+        "value": "Welcome to\nPSPDFKit"
+      },
+      "type": "pspdfkit/text",
+      "updatedAt": "1970-01-01T00:00:00Z",
+      "v": 2,
+      "verticalAlign": "center"
+    },
+    {
+      "bbox": [50, 50, 150, 50],
+      "createdAt": "1970-01-01T00:00:00Z",
+      "id": "01HZ5BHHGEJEXECJJ9H4R70WJV",
+      "isDrawnNaturally": false,
+      "lineWidth": 5,
+      "lines": {
+        "intensities": [
+          [0.5, 0.5],
+          [0.5, 0.5],
+          [0.5, 0.5]
+        ],
+        "points": [
+          [
+            [50, 50],
+            [200, 50]
+          ],
+          [
+            [50, 75],
+            [200, 75]
+          ],
+          [
+            [50, 100],
+            [200, 100]
+          ]
+        ]
+      },
+      "name": "01HZ5BHHGEJEXECJJ9H4R70WJV",
+      "opacity": 1,
+      "pageIndex": 1,
+      "strokeColor": "#FFFFFF",
+      "type": "pspdfkit/ink",
+      "updatedAt": "1970-01-01T00:00:00Z",
+      "v": 2
+    },
+    {
+      "bbox": [390, 380, 120, 120],
+      "createdAt": "1970-01-01T00:00:00Z",
+      "id": "01HZ5BHHGEVA0GBYDSXEV6DBHA",
+      "name": "01HZ5BHHGEVA0GBYDSXEV6DBHA",
+      "opacity": 1,
+      "pageIndex": 0,
+      "strokeColor": "#2293FB",
+      "strokeWidth": 5,
+      "type": "pspdfkit/shape/ellipse",
+      "updatedAt": "1970-01-01T00:00:00Z",
+      "v": 2
+    },
+    {
+      "bbox": [500, 20, 30, 30],
+      "color": "#FFD83F",
+      "createdAt": "1970-01-01T00:00:00Z",
+      "icon": "comment",
+      "id": "01HZ5BHHGFGP0TV6CSPQ16BX5M",
+      "name": "01HZ5BHHGFGP0TV6CSPQ16BX5M",
+      "opacity": 1,
+      "pageIndex": 0,
+      "text": {
+        "format": "plain",
+        "value": "An example for a Note Annotation"
+      },
+      "type": "pspdfkit/note",
+      "updatedAt": "1970-01-01T00:00:00Z",
+      "v": 2
+    },
+    {
+      "bbox": [30, 424, 223, 83],
+      "blendMode": "multiply",
+      "color": "#FCEE7C",
+      "createdAt": "1970-01-01T00:00:00Z",
+      "id": "01HZ5BHHGFTYARCZGKGZXW2AYZ",
+      "name": "01HZ5BHHGFTYARCZGKGZXW2AYZ",
+      "opacity": 1,
+      "pageIndex": 0,
+      "rects": [
+        [30, 424, 223, 42],
+        [30, 465, 122, 42]
+      ],
+      "type": "pspdfkit/markup/highlight",
+      "updatedAt": "1970-01-01T00:00:00Z",
+      "v": 2
+    },
+    {
+      "action": {
+        "type": "uri",
+        "uri": "http://www.ribrand.si/en/set-of-utensils.html"
+      },
+      "bbox": [28.346500396728516, 695, 100.84251403808594, 20.4920654296875],
+      "borderStyle": "solid",
+      "borderWidth": 1,
+      "createdAt": "2024-05-21T08:36:34Z",
+      "creatorName": "Button 1",
+      "formFieldName": "Button 1",
+      "id": "7QHT8EFNNHD1DAEG3Y6A65F8C5",
+      "opacity": 1,
+      "pageIndex": 0,
+      "rotation": 0,
+      "type": "pspdfkit/widget",
+      "updatedAt": "2024-05-21T08:36:34Z",
+      "v": 2
+    }
+  ],
+  "formFields": [
+    {
+      "annotationIds": ["7QHT8EFNNHD1DAEG3Y6A65F8C5"],
+      "buttonLabel": "",
+      "id": "7QHT8EFNQ7JRNJYJ3N2RD56WJJ",
+      "label": "Button 1",
+      "name": "Button 1",
+      "pdfObjectId": 94,
+      "type": "pspdfkit/form-field/button",
+      "v": 1
+    }
+  ],
+  "format": "https://pspdfkit.com/instant-json/v1"
+}
