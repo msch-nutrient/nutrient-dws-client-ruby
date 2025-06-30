@@ -176,6 +176,213 @@ module NutrientDWS
         make_request(instructions, files: { 'document' => file })
       end
 
+      def duplicate_pages(file:, page: nil, start_page: nil, end_page: nil)
+        parts = []
+
+        if page
+          # Duplicate a single page
+          parts << build_part_with_pages(file, 'document', page, page)
+        elsif start_page && end_page
+          # Duplicate a page range
+          parts << build_part_with_pages(file, 'document', start_page, end_page)
+        else
+          # Duplicate the entire document (no page specification)
+          parts << build_part(file, 'document')
+        end
+
+        # Add the original document as well to create the duplication effect
+        parts << build_part(file, 'document')
+
+        instructions = {
+          parts: parts
+        }
+
+        make_request(instructions, files: { 'document' => file })
+      end
+
+      def delete_pages(file:, page: nil, start_page: nil, end_page: nil, keep_before: nil, keep_after: nil)
+        parts = []
+
+        if page
+          # Delete a single page - keep pages before and after
+          if page > 0
+            parts << build_part_with_pages(file, 'document', 0, page - 1)
+          end
+          parts << build_part_with_pages(file, 'document', page + 1, -1)
+        elsif start_page && end_page
+          # Delete a page range - keep pages before and after the range
+          if start_page > 0
+            parts << build_part_with_pages(file, 'document', 0, start_page - 1)
+          end
+          parts << build_part_with_pages(file, 'document', end_page + 1, -1)
+        elsif keep_before
+          # Keep pages before a certain point (delete from that point onwards)
+          parts << build_part_with_pages(file, 'document', 0, keep_before - 1)
+        elsif keep_after
+          # Keep pages after a certain point (delete from beginning to that point)
+          parts << build_part_with_pages(file, 'document', keep_after + 1, -1)
+        else
+          raise ArgumentError, 'Must specify pages to delete or pages to keep'
+        end
+
+        # Remove empty parts
+        parts = parts.reject { |part| part.dig(:pages, :start) == part.dig(:pages, :end) && part.dig(:pages, :start) == -1 }
+
+        instructions = {
+          parts: parts
+        }
+
+        make_request(instructions, files: { 'document' => file })
+      end
+
+      def flatten(file:)
+        instructions = {
+          parts: [
+            build_part(file, 'document')
+          ],
+          actions: [
+            {
+              type: 'flatten'
+            }
+          ]
+        }
+
+        make_request(instructions, files: { 'document' => file })
+      end
+
+      def rotate(file:, rotate_by:)
+        unless [90, 180, 270].include?(rotate_by)
+          raise ArgumentError, "Invalid rotation angle: #{rotate_by}. Supported angles: 90, 180, 270"
+        end
+
+        instructions = {
+          parts: [
+            build_part(file, 'document')
+          ],
+          actions: [
+            {
+              type: 'rotate',
+              rotateBy: rotate_by
+            }
+          ]
+        }
+
+        make_request(instructions, files: { 'document' => file })
+      end
+
+      def add_page(file:, position: :end, after_page: nil, page_count: 1, page_size: 'Letter')
+        parts = []
+
+        if position == :beginning
+          # Add new page(s) at the beginning
+          parts << build_new_page_part(page_count, page_size)
+          parts << build_part(file, 'document')
+        elsif position == :end
+          # Add new page(s) at the end
+          parts << build_part(file, 'document')
+          parts << build_new_page_part(page_count, page_size)
+        elsif after_page
+          # Add new page(s) after a specific page
+          parts << build_part_with_pages(file, 'document', 0, after_page)
+          parts << build_new_page_part(page_count, page_size)
+          parts << build_part_with_pages(file, 'document', after_page + 1, -1)
+        else
+          raise ArgumentError, 'Must specify position (:beginning, :end) or after_page'
+        end
+
+        instructions = {
+          parts: parts
+        }
+
+        make_request(instructions, files: { 'document' => file })
+      end
+
+      def set_page_label(file:, labels:)
+        # Convert labels to the API format
+        formatted_labels = labels.map do |label|
+          if label[:page]
+            {
+              pages: { start: label[:page], end: label[:page] },
+              label: label[:label]
+            }
+          elsif label[:start_page] && label[:end_page]
+            {
+              pages: { start: label[:start_page], end: label[:end_page] },
+              label: label[:label]
+            }
+          else
+            raise ArgumentError, 'Each label must specify either :page or :start_page and :end_page'
+          end
+        end
+
+        instructions = {
+          parts: [
+            build_part(file, 'document')
+          ],
+          output: {
+            type: 'pdf',
+            labels: formatted_labels
+          }
+        }
+
+        make_request(instructions, files: { 'document' => file })
+      end
+
+      def json_import(file:, json_data: nil, json_file: nil)
+        raise ArgumentError, 'Either json_data or json_file must be provided' if json_data.nil? && json_file.nil?
+
+        files = { 'document' => file }
+        
+        if json_data
+          # Create a temporary file for the JSON data
+          require 'tempfile'
+          temp_file = Tempfile.new(['annotations', '.json'])
+          temp_file.write(json_data)
+          temp_file.rewind
+          files['annotations.json'] = temp_file.path
+        elsif json_file
+          files['annotations.json'] = json_file
+        end
+
+        instructions = {
+          parts: [
+            build_part(file, 'document')
+          ],
+          actions: [
+            {
+              type: 'applyInstantJson',
+              file: 'annotations.json'
+            }
+          ]
+        }
+
+        result = make_request(instructions, files: files)
+        
+        # Clean up temporary file if created
+        if json_data && temp_file
+          temp_file.close
+          temp_file.unlink
+        end
+        
+        result
+      end
+
+      def xfdf_import(file:, xfdf_file:)
+        instructions = {
+          parts: [
+            build_part(file, 'document')
+          ],
+          actions: [
+            {
+              type: 'applyXfdf',
+              file: 'xfdf_data'
+            }
+          ]
+        }
+
+        make_request(instructions, files: { 'document' => file, 'xfdf_data' => xfdf_file })
+      end
+
       private
 
       def parse_page_ranges(ranges)
@@ -199,6 +406,28 @@ module NutrientDWS
         else
           { file: file_key }
         end
+      end
+
+      def build_part_with_pages(file, file_key, start_page, end_page)
+        part = build_part(file, file_key)
+        
+        if url?(file)
+          part[:file][:pages] = { start: start_page, end: end_page }
+        else
+          part[:pages] = { start: start_page, end: end_page }
+        end
+        
+        part
+      end
+
+      def build_new_page_part(page_count, page_size)
+        {
+          page: 'new',
+          pageCount: page_count,
+          layout: {
+            size: page_size
+          }
+        }
       end
 
       def url?(file)
