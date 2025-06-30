@@ -343,29 +343,7 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
   end
 
   describe '#json_import' do
-    let(:json_data) do
-      {
-        "annotations": [
-          {
-            "bbox": [50, 50, 150, 50],
-            "backgroundColor": "#2293FB",
-            "createdAt": "1970-01-01T00:00:00Z",
-            "id": "test-annotation-001",
-            "name": "test-annotation-001",
-            "opacity": 1,
-            "pageIndex": 0,
-            "text": {
-              "format": "plain",
-              "value": "Test annotation"
-            },
-            "type": "pspdfkit/text",
-            "updatedAt": "1970-01-01T00:00:00Z",
-            "v": 2
-          }
-        ],
-        "format": "https://pspdfkit.com/instant-json/v1"
-      }.to_json
-    end
+    let(:json_data) { File.read('spec/fixtures/annotations.json') }
     let(:json_file) { 'spec/fixtures/annotations.json' }
 
     it 'successfully imports JSON data to a PDF' do

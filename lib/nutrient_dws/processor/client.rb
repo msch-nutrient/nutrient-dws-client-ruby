@@ -337,7 +337,14 @@ module NutrientDWS
           # Create a temporary file for the JSON data
           require 'tempfile'
           temp_file = Tempfile.new(['annotations', '.json'])
-          temp_file.write(json_data)
+          
+          # Handle both Hash and String inputs
+          if json_data.is_a?(Hash)
+            temp_file.write(JSON.dump(json_data))
+          else
+            temp_file.write(json_data.to_s)
+          end
+          
           temp_file.close
           files['annotations.json'] = temp_file.path
         elsif json_file
