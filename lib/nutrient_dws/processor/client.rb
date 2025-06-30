@@ -338,7 +338,7 @@ module NutrientDWS
           require 'tempfile'
           temp_file = Tempfile.new(['annotations', '.json'])
           temp_file.write(json_data)
-          temp_file.rewind
+          temp_file.close
           files['annotations.json'] = temp_file.path
         elsif json_file
           files['annotations.json'] = json_file

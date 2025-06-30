@@ -209,29 +209,21 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
 
   describe '#duplicate_pages' do
     it 'successfully duplicates a single page' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.duplicate_pages(file: pdf_file, page: 0)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully duplicates a page range' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.duplicate_pages(file: pdf_file, start_page: 0, end_page: 0)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully duplicates the entire document' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.duplicate_pages(file: pdf_file)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'handles negative page indexing' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.duplicate_pages(file: pdf_file, page: -1)
       expect(pdf_result).to be_a_valid_pdf
     end
@@ -239,36 +231,26 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
 
   describe '#delete_pages' do
     it 'successfully deletes a single page' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.delete_pages(file: pdf_file, page: 0)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully deletes a page range' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.delete_pages(file: pdf_file, start_page: 0, end_page: 0)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully keeps pages before a cutoff point' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.delete_pages(file: pdf_file, keep_before: 1)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully keeps pages after a cutoff point' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.delete_pages(file: pdf_file, keep_after: 0)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'raises an error when no deletion criteria provided' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       expect do
         client.delete_pages(file: pdf_file)
       end.to raise_error(ArgumentError, 'Must specify pages to delete or pages to keep')
@@ -277,15 +259,11 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
 
   describe '#flatten' do
     it 'successfully flattens a PDF' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.flatten(file: pdf_file)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'accepts File objects' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       File.open(pdf_file, 'rb') do |file|
         pdf_result = client.flatten(file: file)
         expect(pdf_result).to be_a_valid_pdf
@@ -295,29 +273,21 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
 
   describe '#rotate' do
     it 'successfully rotates a PDF by 90 degrees' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.rotate(file: pdf_file, rotate_by: 90)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully rotates a PDF by 180 degrees' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.rotate(file: pdf_file, rotate_by: 180)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully rotates a PDF by 270 degrees' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.rotate(file: pdf_file, rotate_by: 270)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'raises an error for invalid rotation angle' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       expect do
         client.rotate(file: pdf_file, rotate_by: 45)
       end.to raise_error(ArgumentError, /Invalid rotation angle/)
@@ -326,36 +296,26 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
 
   describe '#add_page' do
     it 'successfully adds a blank page at the beginning' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.add_page(file: pdf_file, position: :beginning)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully adds a blank page at the end' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.add_page(file: pdf_file, position: :end)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully adds multiple blank pages' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.add_page(file: pdf_file, position: :end, page_count: 3)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully adds a page with custom size' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.add_page(file: pdf_file, position: :end, page_size: 'A4')
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully adds a page at a specific position' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.add_page(file: pdf_file, after_page: 0)
       expect(pdf_result).to be_a_valid_pdf
     end
@@ -363,15 +323,11 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
 
   describe '#set_page_label' do
     it 'successfully sets a label for a single page' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.set_page_label(file: pdf_file, labels: [{ page: 0, label: 'i' }])
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'successfully sets labels for multiple pages' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       labels = [
         { page: 0, label: 'i' },
         { start_page: 1, end_page: 2, label: '1' }
@@ -381,8 +337,6 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
     end
 
     it 'successfully sets labels for page ranges' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.set_page_label(file: pdf_file, labels: [{ start_page: 0, end_page: 1, label: 'Intro' }])
       expect(pdf_result).to be_a_valid_pdf
     end
@@ -415,36 +369,25 @@ RSpec.describe NutrientDWS::Processor::Client, :integration do
     let(:json_file) { 'spec/fixtures/annotations.json' }
 
     it 'successfully imports JSON data to a PDF' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-
       pdf_result = client.json_import(file: pdf_file, json_data: json_data)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'accepts JSON data as a file' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-      skip 'annotations.json fixture not found' unless File.exist?(json_file)
-
       pdf_result = client.json_import(file: pdf_file, json_file: json_file)
       expect(pdf_result).to be_a_valid_pdf
     end
   end
 
   describe '#xfdf_import' do
-    let(:xfdf_file) { 'spec/fixtures/sample.xfdf' }
+    let(:xfdf_file) { 'spec/fixtures/annotations.xfdf' }
 
     it 'successfully imports XFDF data to a PDF' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-      skip 'sample.xfdf fixture not found' unless File.exist?(xfdf_file)
-
       pdf_result = client.xfdf_import(file: pdf_file, xfdf_file: xfdf_file)
       expect(pdf_result).to be_a_valid_pdf
     end
 
     it 'accepts File objects for XFDF data' do
-      skip 'sample.pdf fixture not found' unless File.exist?(pdf_file)
-      skip 'sample.xfdf fixture not found' unless File.exist?(xfdf_file)
-
       File.open(xfdf_file, 'rb') do |xfdf|
         pdf_result = client.xfdf_import(file: pdf_file, xfdf_file: xfdf)
         expect(pdf_result).to be_a_valid_pdf
